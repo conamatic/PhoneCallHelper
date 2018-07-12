@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,34 +15,17 @@ namespace PhoneCallHelper
     {
         public List<SettingData> GetModuleSettings()
         {
-            string path = Application.StartupPath;
+            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             List<SettingData> moduleSettings = new List<SettingData>();
 
-            if (File.Exists(path + "\\settings.json"))
+            if (File.Exists("settings.json"))
             {
-                JToken tkn = JObject.Parse(File.ReadAllText(path + "\\settings.json"));
-                JObject obj = tkn.Value<JObject>();
-
-                foreach (KeyValuePair<string, JToken> setting in obj)
-                {
-                    JToken token = JObject.Parse(setting.Value.ToString());
-
-                    SettingData settings = new SettingData
-                    {
-                        Name = (string)token.SelectToken("Name"),
-                        Text = (string)token.SelectToken("Text"),
-                        Value = (string)token.SelectToken("Value"),
-                        Domain = (string)token.SelectToken("Domain"),
-                        Module = "PhoneCallHelper"
-                    };
-                    moduleSettings.Add(settings);
-                }
-
-                return moduleSettings;
+                moduleSettings = JsonConvert.DeserializeObject<List<SettingData>>(File.ReadAllText("settings.json"));
             }
 
-            return null;
+            return moduleSettings;
         }
+
 
         public bool SaveModuleSettings(JObject json)
         {
@@ -69,11 +53,12 @@ namespace PhoneCallHelper
 
     public class SettingData
     {
-        public string Module { get; set; }
         public string Name { get; set; }
         public string Text { get; set; }
         public string Domain { get; set; }
         public string Value { get; set; }
-    }
 
+        [JsonIgnore]
+        public string Module { get; set; }
+    }
 }
