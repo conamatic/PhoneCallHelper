@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace PhoneCallHelper
         [STAThread]
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.FirstChanceException += FirstChanceHandler;
             File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - Args: " + String.Join(" ", args) + Environment.NewLine);
 
             if (args.Length == 3)
@@ -42,6 +44,11 @@ namespace PhoneCallHelper
                     Application.Run(new MainForm(_settings, _sql, args[1], args[2]));
                 }
             }
+        }
+
+        private static void FirstChanceHandler(object sender, FirstChanceExceptionEventArgs e)
+        {
+            File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + e.Exception.ToString());
         }
     }
 }

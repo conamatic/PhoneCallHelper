@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,11 +37,13 @@ namespace PhoneCallHelper
             duration = dur;
         }
 
+
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             DateTime dt = DateTime.Now;
-            string start_time = dt.AddSeconds(-Convert.ToDouble(duration)).ToString("yyyy-MM-dd hh:mm:ss");
-            string end_time = dt.ToString("yyyy-MM-dd hh:mm:ss");
+            string start_time = dt.AddSeconds(-Convert.ToDouble(duration)).ToString("yyyy-MM-dd HH:mm:ss");
+            string end_time = dt.ToString("yyyy-MM-dd HH:mm:ss");
             string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             username = username.Split('\\')[1].Split('.')[0].ToUpper();
             _sql.Command("INSERT INTO Flexpoint.CALLS (user_nm, phone_no, duration, start_time, end_time) VALUES ('" + username + "','" + phoneNo + "','" + duration + "','" + start_time + "','" + end_time + "')");
