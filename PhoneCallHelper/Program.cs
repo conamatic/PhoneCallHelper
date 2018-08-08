@@ -21,8 +21,6 @@ namespace PhoneCallHelper
 
             if (args.Length == 3)
             {
-                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + "3 args received" + Environment.NewLine);
-
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
@@ -35,8 +33,6 @@ namespace PhoneCallHelper
                 _sql.DATABASE = _settings.GetSetting(settings, "CallLog_Database");
                 _sql.USERNAME = _settings.GetSetting(settings, "CallLog_Username");
                 _sql.PASSWORD = _settings.GetSetting(settings, "CallLog_Password");
-
-                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + _sql.SERVER + " " + _sql.DATABASE + " " + _sql.USERNAME + " " + _sql.PASSWORD + " " + Environment.NewLine);
 
                 if (_sql.TestConnection())
                 {

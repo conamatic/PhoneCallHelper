@@ -48,7 +48,8 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.CloseForm);
+            this.pictureBox1.Click += new System.EventHandler(this.CreateLog);
+            this.pictureBox1.DoubleClick += new System.EventHandler(this.CloseForm);
             // 
             // label1
             // 
@@ -60,7 +61,8 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Call Logged";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.CloseForm);
+            this.label1.Click += new System.EventHandler(this.CreateLog);
+            this.label1.DoubleClick += new System.EventHandler(this.CloseForm);
             // 
             // lblDuration
             // 
@@ -72,7 +74,8 @@
             this.lblDuration.TabIndex = 2;
             this.lblDuration.Text = "Duration : ###";
             this.lblDuration.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblDuration.Click += new System.EventHandler(this.CloseForm);
+            this.lblDuration.Click += new System.EventHandler(this.CreateLog);
+            this.lblDuration.DoubleClick += new System.EventHandler(this.CloseForm);
             // 
             // lblPhoneNo
             // 
@@ -84,7 +87,8 @@
             this.lblPhoneNo.TabIndex = 3;
             this.lblPhoneNo.Text = "Phone No: ###";
             this.lblPhoneNo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblPhoneNo.Click += new System.EventHandler(this.CloseForm);
+            this.lblPhoneNo.Click += new System.EventHandler(this.CreateLog);
+            this.lblPhoneNo.DoubleClick += new System.EventHandler(this.CloseForm);
             // 
             // label4
             // 
@@ -94,9 +98,10 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(270, 13);
             this.label4.TabIndex = 4;
-            this.label4.Text = "Click to Close";
+            this.label4.Text = "Click to Create Job";
             this.label4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.label4.Click += new System.EventHandler(this.CloseForm);
+            this.label4.Click += new System.EventHandler(this.CreateLog);
+            this.label4.DoubleClick += new System.EventHandler(this.CloseForm);
             // 
             // panel1
             // 
@@ -127,7 +132,8 @@
             this.Text = "Phone Call Helper";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Click += new System.EventHandler(this.CloseForm);
+            this.Click += new System.EventHandler(this.CreateLog);
+            this.DoubleClick += new System.EventHandler(this.CloseForm);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Windows.Forms;
 
 namespace PhoneCallHelper
 {
@@ -52,7 +55,10 @@ namespace PhoneCallHelper
 
                 return Connection;
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            catch (SqlException ex)
+            {
+                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - SQL Server Error " + ex.Number + Environment.NewLine);
+            }
             return false;
         }
 
@@ -71,7 +77,11 @@ namespace PhoneCallHelper
                 int rowsAffectedDB = cmdDB.ExecuteNonQuery();
                 ConDB.Close();
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            catch (SqlException ex)
+            {
+                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + Statement + Environment.NewLine);
+                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - SQL Query Error " + ex.ToString() + Environment.NewLine);
+            }
             return;
         }
 
@@ -113,6 +123,41 @@ namespace PhoneCallHelper
             }
             catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             return count;
+        }
+
+        public Dictionary<string, string> Select(string Statement)
+        {
+            try
+            {
+                string StrDB = "Server=" + SERVER + ";Database=" + DATABASE + ";User Id=" + USERNAME + ";Password=" + PASSWORD + ";";
+                using (SqlConnection ConDB = new SqlConnection(StrDB))
+                {
+                    ConDB.Open();
+
+                    Dictionary<string, string> ToReturn = new Dictionary<string, string>();
+                    using (SqlCommand cmdDB = new SqlCommand(Statement, ConDB))
+                    using (SqlDataReader reader = cmdDB.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                ToReturn.Add(reader.GetName(i), reader.GetFieldValue<object>(i).ToString());
+                            }
+                        } else
+                        {
+                            return null;
+                        }
+                    }
+                    return ToReturn;
+                }
+            }
+            catch (SqlException ex)
+            {
+                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + Statement + Environment.NewLine);
+                File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - SQL Query error " + ex.ToString() + Environment.NewLine);
+                return null;
+            }
         }
 
         /* Select Data 
