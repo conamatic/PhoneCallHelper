@@ -16,7 +16,7 @@ namespace PhoneCallHelper
         [STAThread]
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.FirstChanceException += FirstChanceHandler;
+            Directory.SetCurrentDirectory(Application.StartupPath);
             File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - Args: " + String.Join(" ", args) + Environment.NewLine);
 
             if (args.Length == 3)
@@ -44,11 +44,6 @@ namespace PhoneCallHelper
                     Application.Run(new MainForm(_settings, _sql, args[1], args[2]));
                 }
             }
-        }
-
-        private static void FirstChanceHandler(object sender, FirstChanceExceptionEventArgs e)
-        {
-            File.AppendAllText(Application.StartupPath + "\\log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + " - " + e.Exception.ToString());
         }
     }
 }
